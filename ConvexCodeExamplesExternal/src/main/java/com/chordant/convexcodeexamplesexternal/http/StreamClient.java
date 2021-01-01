@@ -40,7 +40,7 @@ public class StreamClient {
     private final String BEARER_TOKEN = "01UuYaJdPMZ2FsoE";
 
     private final String BASE_URL = "http://localhost:3000";
-    
+
     final static Logger logger = Logger.getLogger(StreamClient.class);
 
     public static void main(String[] args) throws Exception {
@@ -51,32 +51,21 @@ public class StreamClient {
             logger.info("Running Java Stream Client...");
             logger.info("------------------------");
 
-            //System.out.println("Stage 1 - Get Active Messages to send");
-            String messagesResponse = sc.getActiveMessages();
-            System.out.println("Response: " + messagesResponse);
+            //Publish test message
+            String baseUrl = "https://http.convexglobal.io";
+            String content = "Hello Everyone";
+            String resourceId = "2cc2aa";
+            String token = "01OZLElajKpQJonw";
+
+            System.out.println("Stage 1 - Publish a message");
+            String response = publishMessage(baseUrl, content, resourceId, token);
+            System.out.println("Response: " + response);
             System.out.println("------------------------");
-
-           
-            System.out.println("Stage 2 - Iterate and Send Messages");
-            JSONArray messageArray = new JSONArray(messagesResponse);
-            System.out.println("Number of messages to process: " + messageArray.length());
-
-            for (int i = 0; i < messageArray.length(); i++) {
-                JSONObject jo = messageArray.getJSONObject(i);
-
-                String url = jo.getString("url");
-                String sentAt = jo.getString("sentat");
-
-                long frequency = jo.getLong("frequency");
-
-                System.out.println("url: " + url);
-                System.out.println("SentAt: " + sentAt);
-                System.out.println("Frequency: " + frequency);
-
-                Timestamp ts1 = Timestamp.valueOf(sentAt.replace("T", " "));
-                System.out.println("Timestamp in millis: " + ts1.getTime());                
-
-            }
+            
+            System.out.println("Stage 2 - Consume a message");
+            String response2 = consumeMessage(baseUrl, content, resourceId, token);
+            System.out.println("Response: " + response2);
+            System.out.println("------------------------");
 
         } finally {
             sc.close();
@@ -87,45 +76,16 @@ public class StreamClient {
         httpClient.close();
     }
 
-    private String getActiveMessages() throws Exception {
+   
+   
+
+    private static String publishMessage(String baseUrl, String content, String resourceId, String token) throws Exception {
 
         String responseString = null;
 
-        HttpGet get = new HttpGet(BASE_URL + "/messages?state=eq.active");
-
-        // add request headers
-        //post.addHeader("Content-Type", "application/json");
-        //post.addHeader("Accept", "application/json");
-        //post.addHeader("Authorization", "Bearer "+BEARER_TOKEN);               
-        //HttpEntity entity = new StringEntity(AUTH_JSON, ContentType.APPLICATION_JSON);
-        //post.setEntity(entity);
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(get)) {
-
-            responseString = EntityUtils.toString(response.getEntity());
-
-            //JSONObject jo = new JSONObject(responseJson);            
-            //token = jo.getJSONObject("token").getString("value");      
-            //System.out.println("token: "+token);
-        }
-
-        return responseString;
-
-    }
-
-    private static String sendHttpsMessage(String messageId, String url, String content, String token) throws Exception {
-
-        System.out.println("sendHttpsMessage - URL: "+url);
-        
-        String responseString = null;
+        String url = baseUrl + "/stream/" + resourceId;
 
         HttpPut put = new HttpPut(url);
-
-        // add request headers
-        //put.addHeader("Content-Type", "application/json");
-        //put.addHeader("Accept", "application/json");
-        //content = "test";
-        token = "01OZLElajKpQJonw";
 
         if (token != null) {
             put.addHeader("Authorization", "Bearer " + token);
@@ -145,14 +105,41 @@ public class StreamClient {
 
             //JSONArray ja = new JSONArray(responseString);
             //String messageId = ja.getJSONObject(0).getString("id");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");          
-           
-                      
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
             return responseString;
 
         }
-
-        //return responseString;
     }
-   
+    
+    private static String consumeMessage(String baseUrl, String content, String resourceId, String token) throws Exception {
+
+        String responseString = null;
+
+        String url = baseUrl + "/stream/" + resourceId;
+
+        HttpGet get = new HttpGet(url);
+
+        if (token != null) {
+            get.addHeader("Authorization", "Bearer " + token);
+        }
+
+        String json = null;
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(get)) {
+
+            responseString = EntityUtils.toString(response.getEntity());
+
+            System.out.println("Response String: " + responseString);
+
+            //JSONArray ja = new JSONArray(responseString);
+            //String messageId = ja.getJSONObject(0).getString("id");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            return responseString;
+
+        }
+    }
+
 }
