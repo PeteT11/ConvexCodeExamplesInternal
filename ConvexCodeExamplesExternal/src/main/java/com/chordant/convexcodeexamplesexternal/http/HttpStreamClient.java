@@ -32,7 +32,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-public class StreamClient {
+public class HttpStreamClient {
 
     // one instance, reuse
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -41,11 +41,11 @@ public class StreamClient {
 
     private final String BASE_URL = "http://localhost:3000";
 
-    final static Logger logger = Logger.getLogger(StreamClient.class);
+    final static Logger logger = Logger.getLogger(HttpStreamClient.class);
 
     public static void main(String[] args) throws Exception {
 
-        StreamClient sc = new StreamClient();
+        HttpStreamClient sc = new HttpStreamClient();
 
         try {
             logger.info("Running Java Stream Client...");
