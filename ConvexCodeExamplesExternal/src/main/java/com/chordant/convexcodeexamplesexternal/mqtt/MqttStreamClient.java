@@ -63,9 +63,8 @@ public class MqttStreamClient implements MqttCallback {
         this.client.setCallback(this);
         
         this.client.connect(conOpt);
-        //this.client.
-
-        //this.client.subscribe(this.topic, qos);
+     
+        this.client.subscribe(this.topic, qos);
     }
 
     private String[] getAuth(URI uri) {
@@ -92,6 +91,7 @@ public class MqttStreamClient implements MqttCallback {
      * @see MqttCallback#deliveryComplete(IMqttDeliveryToken)
      */
     public void deliveryComplete(IMqttDeliveryToken token) {
+        System.out.println("Message Delivery Complete: "+token);
     }
 
     /**

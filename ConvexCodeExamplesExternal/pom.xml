@@ -9,6 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <amqp-client.version>3.6.6</amqp-client.version>
     </properties>
     <dependencies>   
         <dependency>
@@ -40,10 +41,14 @@
             <groupId>org.eclipse.paho</groupId>
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>1.2.1</version>
-        </dependency>
-
-    </dependencies>    
-    <pluginRepositories>
+        </dependency>            
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${amqp-client.version}</version>
+            </dependency>
+        </dependencies>    
+       <pluginRepositories>
         <pluginRepository>
             <id>central</id>
             <name>Central Repository</name>

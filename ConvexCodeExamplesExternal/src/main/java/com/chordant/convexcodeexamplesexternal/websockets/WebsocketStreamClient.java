@@ -11,7 +11,7 @@ public class WebsocketStreamClient
      */
     
     //private static final String SERVER = "ws://echo.websocket.org";
-    private static final String SERVER = "wss://ws.convexglobal.io/stream/5a0a84";
+    private static final String SERVER = "wss://ws.convexglobal.io/stream/2cc2aaTEST";
     /**
      * The timeout value in milliseconds for socket connection.
      */
@@ -21,19 +21,33 @@ public class WebsocketStreamClient
     /**
      * The entry point of this command line application.
      */
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
+        
+        
+        
         // Connect to the echo server.
-        WebSocket ws = connect();       
+        System.out.println("Connecting...");
+        
+        try {
+            WebSocket ws = connect();       
+        
+            ws.sendText("Hello World");
+        } catch (Exception e ){
+            e.printStackTrace();
+        }
+        
+        // Close the WebSocket.
+        //ws.disconnect();
+    }
 
         // The standard input via BufferedReader.
-        BufferedReader in = getInput();
+        //BufferedReader in = getInput();
 
         // A text read from the standard input.
         String text;
 
         // Read lines until "exit" is entered.
-        while ((text = in.readLine()) != null)
+        /*while ((text = in.readLine()) != null)
         {
             // If the input string is "exit".
             if (text.equals("exit"))
@@ -44,11 +58,8 @@ public class WebsocketStreamClient
 
             // Send the text to the server.
             ws.sendText(text);
-        }
+        }*/
 
-        // Close the WebSocket.
-        ws.disconnect();
-    }
 
 
     /**
@@ -67,9 +78,8 @@ public class WebsocketStreamClient
                 public void onBinaryMessage(WebSocket websocket, String message) {
                     System.out.println("Binary Message: "+message);
                 }
-            })
-            .addExtension(WebSocketExtension.PERMESSAGE_DEFLATE)
-            .setUserInfo("01OZLElajKpQJonw")
+            })            
+            .setUserInfo("01OZLElajKpQJonwTEST")
             .connect();
     }
 
