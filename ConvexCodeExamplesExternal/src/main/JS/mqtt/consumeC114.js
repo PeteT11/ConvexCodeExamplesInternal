@@ -1,7 +1,14 @@
+#!/usr/bin/env node
+//Simple Node-based example to consume data using MQTT
+//Libraries required:
+
+var dataResourceId = '2cc2aa';
+var accessToken = '01OZLElajKpQJonw';
+
 var mqtt = require('mqtt');
 
 var options = {
-    username: "01OZLElajKpQJonw",
+    username: +accessToken,
     port: 8883,
     host: 'mqtt.convexglobal.io',
     protocol: 'mqtts',
@@ -9,7 +16,7 @@ var options = {
 
 };
 
-var topic = "stream/2cc2aa";
+var topic = "stream/"+dataResourceId;
 
 var mqttClient = mqtt.connect("mqtt.convexglobal.io", options);
 
@@ -35,10 +42,3 @@ mqttClient.on('message', function (topic, message) {
 mqttClient.on('close', () => {
     console.log(`mqtt client disconnected`);
 });
-
-// Sends a mqtt message to topic: mytopic
-//sendMessage(message) {
-//  this.mqttClient.publish(topic, message);
-//}
-
-//module.exports = MqttHandler;
