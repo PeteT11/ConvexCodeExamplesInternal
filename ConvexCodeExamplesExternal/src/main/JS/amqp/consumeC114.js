@@ -16,7 +16,7 @@ amqp.connect('amqps://' +accessToken +'@amqp.convexglobal.io:5671/stream', funct
       throw error1;
     }
     var exchange = dataResourceId;
-    var queue = accessToken;
+    var queue = dataResourceId;
 
     channel.assertExchange(exchange, 'topic', {
       durable: true
