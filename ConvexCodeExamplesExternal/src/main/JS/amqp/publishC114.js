@@ -1,4 +1,4 @@
-//Simple Node-based example to consume data using AMQP
+//Simple Node-based example to publish data using AMQP
 //Libraries required:
 
 var dataResourceId = '2cc2aa';
