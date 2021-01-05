@@ -28,3 +28,9 @@ client.on("connect", function () {
 
     }
 });
+
+client.on("error", function () {
+    console.log("Connection error occured");    
+});
+
+
