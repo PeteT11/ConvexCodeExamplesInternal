@@ -1,13 +1,20 @@
+#!/usr/bin/env node
+//Simple Node-based example to publish data using HTTP
+//Libraries required:
+
+var dataResourceId = '2cc2aa';
+var accessToken = '01OZLElajKpQJonw';
+
 var https = require('https');
 
 var headers = {
-  Authorization: 'Bearer 01OZLElajKpQJonw'
+  Authorization: 'Bearer '+accessToken
 };
 
 var options = {
   host: 'http.convexglobal.io',
   port: 443,
-  path: '/stream/2cc2aa',
+  path: '/stream/'+dataResourceId,
   method: 'PUT',
   headers: headers
 };

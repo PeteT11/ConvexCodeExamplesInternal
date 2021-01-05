@@ -1,14 +1,20 @@
+#!/usr/bin/env node
+//Simple Node-based example to consume data using HTTP
+//Libraries required:
+
+var dataResourceId = '2cc2aa';
+var accessToken = '01OZLElajKpQJonw';
 
 var https = require('https');
 
 var headers = {
-  Authorization: 'Bearer 01OZLElajKpQJonw'
+  Authorization: 'Bearer '+accessToken
 };
 
 var options = {
   host: 'http.convexglobal.io',
   port: 443,
-  path: '/stream/2cc2aa',
+  path: '/stream/'+dataResourceId,
   method: 'GET',
   headers: headers
 };
@@ -26,6 +32,4 @@ req.on('error', function(e) {
   console.log('problem with request: ' + e.message);
 });
 
-// write data to request body
-//req.write('Hello World from HTTP\n');
 req.end();
