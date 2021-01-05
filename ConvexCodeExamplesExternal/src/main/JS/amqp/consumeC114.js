@@ -1,8 +1,13 @@
 #!/usr/bin/env node
+//Simple Node-based example to consume data using AMQP
+//Libraries required:
+
+var dataResourceId = '2cc2aa';
+var accessToken = '01OZLElajKpQJonw';
 
 var amqp = require('amqplib/callback_api');
 
-amqp.connect('amqps://01OZLElajKpQJonw@amqp.convexglobal.io:5671/stream', function(error0, connection) {
+amqp.connect('amqps://' +accessToken +'@amqp.convexglobal.io:5671/stream', function(error0, connection) {
   if (error0) {
     throw error0;
   }
@@ -10,13 +15,14 @@ amqp.connect('amqps://01OZLElajKpQJonw@amqp.convexglobal.io:5671/stream', functi
     if (error1) {
       throw error1;
     }
-    var exchange = '2cc2aa';
+    var exchange = dataResourceId;
+    var queue = accessToken;
 
     channel.assertExchange(exchange, 'topic', {
       durable: true
     });
 
-    channel.assertQueue(exchange, {
+    channel.assertQueue(queue, {
       durable: true
     }, function(error2, q) {
       if (error2) {
