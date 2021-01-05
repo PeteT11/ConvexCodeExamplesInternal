@@ -3,7 +3,7 @@
 //Libraries required:
 
 var dataResourceId = '2cc2aa';
-var accessToken = '01OZLElajKpQJonw';
+var accessToken = "01OZLElajKpQJonw";
 
 var mqtt = require('mqtt');
 const fs = require('fs');
@@ -11,7 +11,7 @@ const fs = require('fs');
 var message = "Hello";
 
 var options = {
-    username: +accessToken,
+    username: accessToken,
     port: 8883,
     host: 'mqtt.convexglobal.io',
     protocol: 'mqtts',
@@ -19,7 +19,7 @@ var options = {
 };
 
 var topic = "stream/" + dataResourceId;
-var client = mqtt.connect("mqtt.convexglobal.io", options);
+var client = mqtt.connect("mqtt.projectconvex.co.uk", options);
 
 client.on("connect", function () {
     console.log("Connected:  " + client.connected);
