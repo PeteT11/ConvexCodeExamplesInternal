@@ -1,6 +1,12 @@
 #!/usr/bin/env python
+#Simple Node-based example to consume data using AMQP
+#Libraries required:
+
 import pika
 import ssl
+
+dataResourceId = '2cc2aa'
+accessToken = '01OZLElajKpQJonw'
 
 ssl_context = ssl.create_default_context()
 ssl_options = pika.SSLOptions(ssl_context, "amqp.convexglobal.io")
