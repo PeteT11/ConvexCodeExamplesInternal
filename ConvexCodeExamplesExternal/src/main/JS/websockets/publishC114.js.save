@@ -1,13 +1,7 @@
-var ReconnectingWebSocket = require('reconnecting-websocket');
-var WS = require('ws');
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-const options = {
-    WebSocket: WS, // custom WebSocket constructor
-    connectionTimeout: 1000,
-    maxRetries: 10,
-};
+const rws = new require(ReconnectingWebSocket('wss://ws.convexglobal.io/stream/2cc2aa/2cc2aa');
 
-const rws = new ReconnectingWebSocket('wss://01OZLElajKpQJonw@ws.convexglobal.io/stream/2cc2aa/2cc2aa', [], options);
 
 var dataResourceId = '2cc2aa';
 var accessToken = '01OZLElajKpQJonw';
@@ -31,6 +25,6 @@ var payload = {
 "count": 1000
 }}};
 
-rws.onopen = function(e) {
+rws.addEventListener('open', () => {
     rws.send(payload);
-};
+});
