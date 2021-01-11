@@ -1,36 +1,27 @@
-import websocket
-try:
-    import thread
-except ImportError:
-    import _thread as thread
-import time
+import paho.mqtt.client as mqtt
 
-def on_message(ws, message):
-    print(message)
+import ssl
 
-def on_error(ws, error):
-    print(error)
-
-def on_close(ws):
-    print("### closed ###")
-
-def on_open(ws):
-    def run(*args):
-        for i in range(3):
-            time.sleep(1)
-            ws.send("Hello %d" % i)
-        time.sleep(1)
-        ws.close()
-        print("thread terminating...")
-    thread.start_new_thread(run, ())
+host = "mqtt.convexglobal.io"
+username = "01OZLElajKpQJonw"
+topic = "stream/2cc2aa"
 
 
-if __name__ == "__main__":
-    websocket.enableTrace(True)
-    ws = websocket.WebSocketApp("wss://ws.convexglobal.io/stream/2cc2aa/2cc2aa",
-                              header = {"Authorization": "Bearer 01OZLElajKpQJonw"},
-                              on_message = on_message,
-                              on_error = on_error,
-                              on_close = on_close)
-    ws.on_open = on_open
-    ws.run_forever()
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
+
+# The callback for when a PUBLISH message is received from the server.
+
+client = mqtt.Client(client_id="P1", clean_session=True, userdata=None, protocol=mqtt.MQTTv311, transport="tcp")
+
+client.username_pw_set(username="01OZLElajKpQJonw", password="")
+
+client.on_connect = on_connect
+
+client.tls_set(ca_certs=None, certfile=None, keyfile=None, cert_reqs=ssl.CERT_OPTIONAL,
+    tls_version=ssl.PROTOCOL_TLS, ciphers=None)
+
+client.connect(host, 8883, 60)
+
+client.publish(topic, payload="Hello World", qos=0, retain=False)
