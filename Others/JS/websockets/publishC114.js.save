@@ -1,0 +1,30 @@
+import ReconnectingWebSocket from 'reconnecting-websocket';
+
+const rws = new require(ReconnectingWebSocket('wss://ws.convexglobal.io/stream/2cc2aa/2cc2aa');
+
+
+var dataResourceId = '2cc2aa';
+var accessToken = '01OZLElajKpQJonw';
+
+
+var payload = {
+  "headers": {
+    "Authorization": "Bearer 01OZLElajKpQJonw"
+}, 
+"content": {
+  "searchSpan": {
+    "from": "UTCDATETIME",
+    "to": "UTCDATETIME"
+  },
+"top": {
+  "sort": [
+    {
+      "input": {"builtInProperty": "$ts"},
+      "order": "Asc"
+    }], 
+"count": 1000
+}}};
+
+rws.addEventListener('open', () => {
+    rws.send(payload);
+});
