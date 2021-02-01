@@ -5,6 +5,7 @@
  */
 package com.chordant.convexcodeexamplesexternal.mqtt;
 
+import com.chordant.convexcodeexamplesexternal.utils.DateUtil;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
@@ -23,24 +24,15 @@ public class MqttStreamClient implements MqttCallback {
     private String topic = "P1";
     private MqttClient client;
 
-    /*public MqttStreamClient(String uri) throws MqttException, URISyntaxException {
-        this(new URI(uri));
-    }*/
+    private static String MSG_TX = "None";
+    private static String MSG_RX = "None";
+    
     public MqttStreamClient() throws MqttException {
 
-        /*String host = String.format("tcp://%s:%d", uri.getHost(), uri.getPort());
-        String[] auth = this.getAuth(uri);
-        String username = auth[0];
-        String password = auth[1];
-        String clientId = "MQTT-Java-Example";
-        if (!uri.getPath().isEmpty()) {
-            this.topic = uri.getPath().substring(1);
-        }*/
         MqttConnectOptions conOpt = new MqttConnectOptions();
 
         try {
             SSLContext sslContext = SSLContext.getDefault();
-            //sslContext.init(null, null, new java.security.SecureRandom());
             SSLSocketFactory socketFactory = sslContext.getSocketFactory();
             conOpt.setSocketFactory(socketFactory);
         } catch (Exception e) {
@@ -57,7 +49,7 @@ public class MqttStreamClient implements MqttCallback {
         
         String clientId = "P1";
         
-        this.topic = "stream/2cc2aa";
+        this.topic = "stream/3ffaa3";
         
         this.client = new MqttClient(host, clientId, new MemoryPersistence());
         this.client.setCallback(this);
@@ -98,14 +90,34 @@ public class MqttStreamClient implements MqttCallback {
      * @see MqttCallback#messageArrived(String, MqttMessage)
      */
     public void messageArrived(String topic, MqttMessage message) throws MqttException {
-        System.out.println(String.format("[%s] %s", topic, new String(message.getPayload())));
+        String messageReceived = new String(message.getPayload());
+        MSG_RX = messageReceived;
+        
+        System.out.println(String.format("Message Received [%s] %s", topic, new String(message.getPayload())));
+        //this.client.close();
     }
 
     public static void main(String[] args) throws MqttException, URISyntaxException {
 
         //mqtt publish --username '01OZLElajKpQJonw' 
         MqttStreamClient sc = new MqttStreamClient();
-        sc.sendMessage("Hello everyone");
-        //sc.sendMessage("Hello 2");
+        
+        String message = DateUtil.getTimestamp();
+        
+        MSG_TX = message;
+        
+        sc.sendMessage(message);
+       
     }
+    
+    public String getMsgTx() {
+        return MSG_TX;
+    }
+
+    public String getMsgRx() {
+        return MSG_RX;
+    }
+    
 }
+
+   

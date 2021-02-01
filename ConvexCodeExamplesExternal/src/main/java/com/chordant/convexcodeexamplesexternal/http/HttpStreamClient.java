@@ -9,6 +9,7 @@ package com.chordant.convexcodeexamplesexternal.http;
  *
  * @author groov
  */
+import com.chordant.convexcodeexamplesexternal.utils.DateUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -30,47 +31,47 @@ public class HttpStreamClient {
     // one instance, reuse
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    private final String BEARER_TOKEN = "01UuYaJdPMZ2FsoE";
-
-    private final String BASE_URL = "http://localhost:3000";
-
     final static Logger logger = Logger.getLogger(HttpStreamClient.class);
 
-    public static void main(String[] args) throws Exception {
+    private static String MSG_TX = "None";
+    private static String MSG_RX = "None";
 
-        HttpStreamClient sc = new HttpStreamClient();
+    public HttpStreamClient(String orgaId, String orgaToken, String orgbId, String orgbToken) throws Exception {
 
         try {
-            logger.info("Running Java Stream Client...");
-            logger.info("------------------------");
 
             //Publish test message
             String baseUrl = "https://http.convexglobal.io";
-            String content = "Hello Everyone";
-            String resourceId = "2cc2aa";
-            String token = "01OZLElajKpQJonw";
+
+            String message = DateUtil.getTimestamp();
+            MSG_TX = message;
 
             System.out.println("Stage 1 - Publish a message");
-            String response = publishMessage(baseUrl, content, resourceId, token);
+            String response = publishMessage(baseUrl, message, orgaId, orgaToken);
             System.out.println("Response: " + response);
             System.out.println("------------------------");
-            
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             System.out.println("Stage 2 - Consume a message");
-            String response2 = consumeMessage(baseUrl, content, resourceId, token);
+            String response2 = consumeMessage(baseUrl, orgbId, orgbToken);
+            MSG_RX = response2;
+
             System.out.println("Response: " + response2);
             System.out.println("------------------------");
 
         } finally {
-            sc.close();
+            close();
         }
     }
 
     private void close() throws IOException {
         httpClient.close();
     }
-
-   
-   
 
     private static String publishMessage(String baseUrl, String content, String resourceId, String token) throws Exception {
 
@@ -104,8 +105,8 @@ public class HttpStreamClient {
 
         }
     }
-    
-    private static String consumeMessage(String baseUrl, String content, String resourceId, String token) throws Exception {
+
+    private static String consumeMessage(String baseUrl, String resourceId, String token) throws Exception {
 
         String responseString = null;
 
@@ -133,6 +134,14 @@ public class HttpStreamClient {
             return responseString;
 
         }
+    }
+
+    public String getMsgTx() {
+        return MSG_TX;
+    }
+
+    public String getMsgRx() {
+        return MSG_RX;
     }
 
 }
