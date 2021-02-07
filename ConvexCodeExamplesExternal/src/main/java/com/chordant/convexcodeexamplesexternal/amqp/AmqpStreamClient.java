@@ -1,6 +1,7 @@
 package com.chordant.convexcodeexamplesexternal.amqp;
 
 import com.chordant.convexcodeexamplesexternal.utils.DateUtil;
+import com.chordant.convexcodeexamplesexternal.utils.FileUtil;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
@@ -34,8 +35,11 @@ public class AmqpStreamClient {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        String message = DateUtil.getTimestamp();
-
+        
+        //String message = DateUtil.getTimestamp();
+        
+        String message = FileUtil.readMessageFromFile("c:/Temp2/test.txt");
+       
         //channel.queueBind(DATA_RESOURCE_ID, DATA_RESOURCE_ID, "");
         //channel.queueDeclare(QUEUE_NAME, false, false, false, null);        
         channel.basicPublish(DATA_RESOURCE_ID, DATA_RESOURCE_ID, null, message.getBytes());

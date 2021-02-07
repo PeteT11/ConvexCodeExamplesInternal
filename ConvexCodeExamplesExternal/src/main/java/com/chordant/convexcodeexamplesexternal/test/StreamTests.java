@@ -5,7 +5,8 @@
  */
 package com.chordant.convexcodeexamplesexternal.test;
 
-import com.chordant.convexcodeexamplesexternal.http.HttpStreamClient;
+import com.chordant.convexcodeexamplesexternal.amqp.AmqpStreamClient;
+import com.chordant.convexcodeexamplesexternal.utils.FileUtil;
 import com.chordant.convexcodeexamplesexternal.websockets.WebsocketStreamClient;
 
 /**
@@ -29,7 +30,7 @@ public class StreamTests {
     
     public static void main(String[] args) {
         
-        System.out.println("[1] Publish using WebSocket - ORG A");
+        /*System.out.println("[1] Publish using WebSocket - ORG A");
         try {
             WebsocketStreamClient wsc = new WebsocketStreamClient(DATA_RESOURCE_ID_ORGA, ACCESS_TOKEN_ORGA, DATA_RESOURCE_ID_ORGB, ACCESS_TOKEN_ORGB);        
             System.out.println("[1] Message Sent: "+wsc.getMsgTx());
@@ -46,7 +47,7 @@ public class StreamTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+        */
               
         /*System.out.println("[1] Publish and Consume using HTTP - ORG A >  ORG B");
         try {
@@ -67,18 +68,18 @@ public class StreamTests {
         }*/
        
         
-        /*System.out.println("[2] Publish and Consume using AMQP - ORG A");
+        System.out.println("[2] Publish and Consume using AMQP - ORG A");
         try {
             AmqpStreamClient client = new AmqpStreamClient();        
             System.out.println("[2] Message Sent: "+client.getMsgTx());
             Thread.sleep(1000);
             System.out.println("[2] Message Received: "+client.getMsgRx());
-            System.out.println("[2] Test Status: "+getTestState(client.getMsgTx(), client.getMsgRx()));
-            
+            //System.out.println("[2] Test Status: "+getTestState(client.getMsgTx(), client.getMsgRx()));
+            FileUtil.saveMessageToFile(client.getMsgRx());
             
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
         
         
         /*System.out.println("[2] Publish and Consume using AMQP - ORG A > ORG B");
